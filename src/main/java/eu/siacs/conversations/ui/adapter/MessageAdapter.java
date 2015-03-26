@@ -230,7 +230,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 							Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 					viewHolder.messageBody.setText(span);
 				} else {
-					viewHolder.messageBody.setText(message.getMergedBody());
+					viewHolder.messageBody.setText(android.text.Html.fromHtml(message.getMergedBody()));
 				}
 			} else {
 				String privateMarker;
