@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.util.DisplayMetrics;
@@ -221,8 +222,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		viewHolder.messageBody.setVisibility(View.VISIBLE);
 		if (message.getBody() != null) {
 			final String nick = UIHelper.getMessageDisplayName(message);
-			final String formattedBody = message.getMergedBody().replaceAll("^" + Message.ME_COMMAND,
-					nick + " ");
+			final Spanned formattedBody = android.text.Html.fromHtml(message.getMergedBody().replaceAll("^" + Message.ME_COMMAND,
+                    nick + " ").replace("\n", "<br/>"));
 			if (message.getType() != Message.TYPE_PRIVATE) {
 				if (message.hasMeCommand()) {
 					final Spannable span = new SpannableString(formattedBody);
@@ -230,7 +231,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 							Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 					viewHolder.messageBody.setText(span);
 				} else {
-					viewHolder.messageBody.setText(android.text.Html.fromHtml(message.getMergedBody()));
+					viewHolder.messageBody.setText(formattedBody);
 				}
 			} else {
 				String privateMarker;
