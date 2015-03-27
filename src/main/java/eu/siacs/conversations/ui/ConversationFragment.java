@@ -253,15 +253,16 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		if (this.conversation == null) {
 			return;
 		}
-		if (mEditMessage.getText().length() < 1) {
+        String messageText = mEditMessage.getText().toString();
+
+		if (messageText.length() < 1) {
 			if (this.conversation.getMode() == Conversation.MODE_MULTI) {
 				conversation.setNextCounterpart(null);
 				updateChatMsgHint();
 			}
 			return;
 		}
-		Message message = new Message(conversation, mEditMessage.getText()
-				.toString(), conversation.getNextEncryption(activity
+		Message message = new Message(conversation, messageText, conversation.getNextEncryption(activity
 					.forceEncryption()));
 		if (conversation.getMode() == Conversation.MODE_MULTI) {
 			if (conversation.getNextCounterpart() != null) {
@@ -487,7 +488,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 	}
 
 	private void copyText(Message message) {
-		if (activity.copyTextToClipboard(message.getMergedBody(),
+		if (activity.copyTextToClipboard(android.text.Html.fromHtml(message.getMergedBody()).toString(),
 					R.string.message_text)) {
 			Toast.makeText(activity, R.string.message_copied_to_clipboard,
 					Toast.LENGTH_SHORT).show();

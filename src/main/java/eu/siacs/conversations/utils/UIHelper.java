@@ -150,17 +150,18 @@ public class UIHelper {
 				return new Pair<>(getFileDescriptionString(context,message),true);
 			}
 		} else {
-			if (message.getBody().startsWith(Message.ME_COMMAND)) {
-				return new Pair<>(message.getBody().replaceAll("^" + Message.ME_COMMAND,
+            final String strippedBody = android.text.Html.fromHtml(message.getBody().trim()).toString();
+			if (strippedBody.startsWith(Message.ME_COMMAND)) {
+				return new Pair<>(strippedBody.replaceAll("^" + Message.ME_COMMAND,
 						UIHelper.getMessageDisplayName(message) + " "), false);
-			} else if (GeoHelper.isGeoUri(message.getBody())) {
+			} else if (GeoHelper.isGeoUri(strippedBody)) {
 				if (message.getStatus() == Message.STATUS_RECEIVED) {
 					return new Pair<>(context.getString(R.string.received_location),true);
 				} else {
 					return new Pair<>(context.getString(R.string.location), true);
 				}
 			} else{
-				return new Pair<>(message.getBody().trim(), false);
+				return new Pair<>(strippedBody, false);
 			}
 		}
 	}
